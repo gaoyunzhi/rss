@@ -10,6 +10,7 @@ import cached_url
 from bs4 import BeautifulSoup
 import album_sender
 import time
+import rss_to_album
 
 with open('credential') as f:
 	credential = yaml.load(f, Loader=yaml.FullLoader)
@@ -26,8 +27,10 @@ def run():
 	for channel_id, detail in setting.items():
 		channel = tele.bot.get_chat(channel_id)
 		for name, rss in detail.items():
-			
-
-
+			for item in rss_to_album(rss):
+				if existing.contain(item.url):
+					continue
+				...
+		
 if __name__ == '__main__':
 	run()
