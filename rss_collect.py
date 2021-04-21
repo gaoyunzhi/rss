@@ -27,7 +27,7 @@ def run():
 	for channel_id, detail in setting.items():
 		channel = tele.bot.get_chat(channel_id)
 		for name, rss in detail.items():
-			for item in rss_to_album(rss):
+			for item in rss_to_album.get(rss):
 				if existing.contain(item.url):
 					continue
 				...

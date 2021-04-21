@@ -9,22 +9,21 @@ import cached_url
 from bs4 import BeautifulSoup
 import feedparser
 
-def getGallery(url):
-    content = cached_url.get(url, force_cache=True)
-    soup = BeautifulSoup(content, 'html.parser')
-    for item in soup.find_all('a'):
-        if item.parent.name != 'figure':
-            continue
-        yield item['href'] 
+def getCap(soup):
+    
+
+def getImgs(soup):
+    for item in soup.find_all('img'):
+        yield item['src'].replace('&amp;', '&') 
 
 def get(rss_path):
     feed = feedparser.parse(rss_path)
     feed_entries = feed.entries
     for entry in feed.entries:
-        print(entry.description)
-        print(entry.link)
+        soup = BeautifulSoup(entry.description, 'html.parser')
         result = Result()
         result.url = entry.link
-        result.cap = ''
-        result.imgs = []
+        result.cap = getCap(soup)
+        result.imgs = list(getImgs(soup))
+        # TODO: support video
         yield result
