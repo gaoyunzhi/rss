@@ -13,7 +13,13 @@ def getCap(soup):
     result = []
     for item in soup:
         if isinstance(item, NavigableString):
-            result.append(item.strip())
+            text = item.strip()
+            pieces = text.split()
+            if pieces and pieces[0].startswith('@'):
+                text = text.replace(pieces[0], '')
+            if pieces and pieces[-1].startswith('@'):
+                text = text.replace(pieces[-1], '')
+            result.append(text.strip())
         elif item.name == 'br':
             result.append('\n')
         elif item.name not in ['img'] and '(Feed generated with FetchRSS)' != item.text:

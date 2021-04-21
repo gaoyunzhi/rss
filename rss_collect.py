@@ -24,15 +24,20 @@ debug_group = tele.bot.get_chat(credential['debug_group'])
 
 @log_on_fail(debug_group)
 def run():
+	sent = False
 	for channel_id, detail in setting.items():
 		channel = tele.bot.get_chat(channel_id)
 		for name, rss in detail.items():
 			for album in rss_to_album.get(rss):
-				if existing.contain(item.url):
+				if existing.contain(album.url):
 					continue
-				album_sender.send(channel, album)
-				existing.add(item.url)
-				return
+				if not sent:
+					sent = True
+				else:
+					item_len = len(album.imgs) or 1
+					time.sleep(item_len * item_len + 5 * item_len)
+				album_sender.send_v2(channel, album)
+				existing.add(album.url)
 		
 if __name__ == '__main__':
 	run()
