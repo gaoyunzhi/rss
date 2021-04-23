@@ -5,7 +5,7 @@ name = 'rss_to_album'
 
 from telegram_util import AlbumResult as Result
 import yaml
-import cached_url
+import instascrape
 from bs4 import BeautifulSoup, NavigableString
 import feedparser
 
@@ -32,6 +32,15 @@ def getImgs(soup):
     for item in soup.find_all('img'):
         yield item['src'].replace('&amp;', '&') 
 
+def shouldProcess(url):
+    post = instascrape.Post(url)
+    post.scrape()
+
+    soup = BeautifulSoup(content, 'html.parser')
+    likes = getLikes(soup)
+    print(url, likes)
+    return likes > 10
+
 def get(rss_path):
     feed = feedparser.parse(rss_path)
     with open('nohup.out', 'a') as f:
@@ -41,6 +50,9 @@ def get(rss_path):
         soup = BeautifulSoup(entry.description or entry.summary, 'html.parser')
         result = Result()
         result.url = entry.link
+        should_process = shouldProcess(result.url)
+        if not should_process:
+            continue
         result.cap_html_v2 = getCap(soup)
         result.imgs = list(getImgs(soup))
         # TODO: support video
