@@ -5,9 +5,12 @@ name = 'rss_to_album'
 
 from telegram_util import AlbumResult as Result
 import yaml
-import instascrape
 from bs4 import BeautifulSoup, NavigableString
 import feedparser
+import instascrape
+
+with open('session_id') as f:
+    session_id = f.read().strip()
 
 def getCap(soup):
     result = []
@@ -35,7 +38,6 @@ def getImgs(soup):
 def shouldProcess(url):
     post = instascrape.Post(url)
     post.scrape()
-    print(url, post.likes)
     return post.likes > 10
 
 def get(rss_path):
