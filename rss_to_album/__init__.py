@@ -7,7 +7,7 @@ from telegram_util import AlbumResult as Result
 import yaml
 from bs4 import BeautifulSoup, NavigableString
 import feedparser
-from instascrape import *
+from instagramy import InstagramPost
 
 with open('session_id') as f:
     session_id = f.read().strip()
@@ -36,9 +36,10 @@ def getImgs(soup):
         yield item['src'].replace('&amp;', '&') 
 
 def shouldProcess(url):
-    post = Post(url)
-    post.scrape(session=session_id)
-    return post.likes > 10
+    print(url.strip('/').split('/')[-1])
+    post = InstagramPost(url.strip('/').split('/')[-1], sessionid=session_id)
+    print(post)
+    return True
 
 def get(rss_path):
     feed = feedparser.parse(rss_path)
