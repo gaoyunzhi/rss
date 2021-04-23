@@ -38,7 +38,7 @@ def get(rss_path):
         f.write('%s\n%s\n\n' % (rss_path, str(feed)))
     feed_entries = feed.entries
     for entry in feed.entries:
-        soup = BeautifulSoup(entry.description, 'html.parser')
+        soup = BeautifulSoup(entry.description or entry.summary, 'html.parser')
         result = Result()
         result.url = entry.link
         result.cap_html_v2 = getCap(soup)
