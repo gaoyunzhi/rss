@@ -34,6 +34,8 @@ def getImgs(soup):
 
 def get(rss_path):
     feed = feedparser.parse(rss_path)
+    with open('nohup.out', 'a') as f:
+        f.write('%s\n%s\n\n' % (rss_path, str(feed)))
     feed_entries = feed.entries
     for entry in feed.entries:
         soup = BeautifulSoup(entry.description, 'html.parser')
