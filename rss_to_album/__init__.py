@@ -7,10 +7,6 @@ from telegram_util import AlbumResult as Result
 import yaml
 from bs4 import BeautifulSoup, NavigableString
 import feedparser
-from instagramy import InstagramPost
-
-with open('session_id') as f:
-    session_id = f.read().strip()
 
 def getCap(soup):
     result = []
@@ -35,12 +31,6 @@ def getImgs(soup):
     for item in soup.find_all('img'):
         yield item['src'].replace('&amp;', '&') 
 
-def shouldProcess(url):
-    print(url.strip('/').split('/')[-1])
-    post = InstagramPost(url.strip('/').split('/')[-1], sessionid=session_id)
-    print(post)
-    return True
-
 def get(rss_path):
     feed = feedparser.parse(rss_path)
     with open('nohup.out', 'a') as f:
@@ -50,9 +40,6 @@ def get(rss_path):
         soup = BeautifulSoup(entry.description or entry.summary, 'html.parser')
         result = Result()
         result.url = entry.link
-        should_process = shouldProcess(result.url)
-        if not should_process:
-            continue
         result.cap_html_v2 = getCap(soup)
         result.imgs = list(getImgs(soup))
         # TODO: support video
