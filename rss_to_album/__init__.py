@@ -35,11 +35,8 @@ def getImgs(soup):
 def shouldProcess(url):
     post = instascrape.Post(url)
     post.scrape()
-
-    soup = BeautifulSoup(content, 'html.parser')
-    likes = getLikes(soup)
-    print(url, likes)
-    return likes > 10
+    print(url, post.likes)
+    return post.likes > 10
 
 def get(rss_path):
     feed = feedparser.parse(rss_path)
