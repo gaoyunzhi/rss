@@ -27,9 +27,15 @@ def getCap(soup):
             print(item.name, item.text.strip())
     return ''.join(result).strip()
 
+def resolveImg(url):
+    pivot = ''
+    if not url.startswith(pivot):
+        return url
+    url = url.split(pivot)[1]
+
 def getImgs(soup):
     for item in soup.find_all('img'):
-        yield item['src'].replace('&amp;', '&') 
+        yield resolveImg(item['src'].replace('&amp;', '&'))
 
 def get(rss_path):
     feed = feedparser.parse(rss_path)
