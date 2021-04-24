@@ -29,15 +29,18 @@ def run():
 		channel = tele.bot.get_chat(channel_id)
 		for name, rss in detail.items():
 			for album in rss_to_album.get(rss):
-				if existing.contain(album.url):
+				if existing.contain(album.url or album.cap_html_v2):
 					continue
 				if not sent:
 					sent = True
 				else:
 					item_len = len(album.imgs) or 1
 					time.sleep(item_len * item_len + 5 * item_len)
-				album_sender.send_v2(channel, album)
-				existing.add(album.url)
+				if album.url:
+					album_sender.send_v2(channel, album)
+				else:
+					channel.send_message(album.cap_html_v2)
+				existing.add(album.url or album.cap_html_v2)
 		
 if __name__ == '__main__':
 	run()
