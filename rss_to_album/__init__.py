@@ -42,5 +42,8 @@ def get(rss_path):
         result.url = entry.link
         result.cap_html_v2 = getCap(soup)
         result.imgs = list(getImgs(soup))
+        if 'posts.careerengine.us' in rss_path:
+            result.imgs = []
+            result.url = ''
         # TODO: support video
         yield result
