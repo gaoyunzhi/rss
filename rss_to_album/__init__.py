@@ -9,9 +9,7 @@ from bs4 import BeautifulSoup, NavigableString
 import feedparser
 from urllib.parse import unquote
 
-def getCap(title, soup, url):
-    if '.careerengine.us' in url:
-        return title
+def getCap(soup):
     result = []
     for item in soup:
         if isinstance(item, NavigableString):
@@ -44,14 +42,14 @@ def getImgs(soup):
 
 def get(rss_path):
     feed = feedparser.parse(rss_path)
-    with open('nohup.out', 'a') as f:
+    with open('details_log', 'a') as f:
         f.write('%s\n%s\n\n' % (rss_path, str(feed)))
     feed_entries = feed.entries
     for entry in feed.entries:
         soup = BeautifulSoup(entry.description or entry.summary, 'html.parser')
         result = Result()
         result.url = entry.link
-        result.cap_html_v2 = getCap(entry.title, soup, entry.link)
+        result.cap_html_v2 = getCap(soup)
         result.imgs = list(getImgs(soup))
         # TODO: support video
         yield result
