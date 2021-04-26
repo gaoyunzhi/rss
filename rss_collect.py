@@ -2,11 +2,9 @@
 # -*- coding: utf-8 -*-
 
 import yaml
-import praw
 from telegram_util import log_on_fail
 from telegram.ext import Updater
 import plain_db
-import cached_url
 from bs4 import BeautifulSoup
 import album_sender
 import time
