@@ -24,6 +24,8 @@ def getCap(soup):
             result.append('\n')
         elif item.name == 'div':
             result.append(item.text.strip() + '\n\n')
+        elif item.name == 'a' and 'rss.app' == item.text:
+            ...
         elif item.name not in ['img'] and '(Feed generated with FetchRSS)' != item.text:
             print(item.name, item.text.strip())
     return ''.join(result).strip()
