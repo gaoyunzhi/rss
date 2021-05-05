@@ -9,6 +9,7 @@ from bs4 import BeautifulSoup
 import album_sender
 import time
 import rss_to_album
+import export_to_telegraph
 
 with open('credential') as f:
 	credential = yaml.load(f, Loader=yaml.FullLoader)
@@ -34,8 +35,10 @@ def run():
 				else:
 					item_len = len(album.imgs) or 1
 					time.sleep(item_len * item_len + 5 * item_len)
-				print(album)
-				album_sender.send_v2(channel, album)
+				if 'mp.weixin.qq.com' in album.url:
+					album_sender.send_v2(channel, export_to_telegraph.getAlbum(album.url))
+				else:
+					album_sender.send_v2(channel, album)
 				existing.add(album.url)
 		
 if __name__ == '__main__':
