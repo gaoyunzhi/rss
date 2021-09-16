@@ -24,10 +24,6 @@ def getCap(soup):
             result.append('\n')
         elif item.name == 'div':
             result.append(item.text.strip() + '\n\n')
-        elif item.name == 'a' and 'rss.app' == item.text:
-            ...
-        elif item.name not in ['img'] and '(Feed generated with FetchRSS)' != item.text:
-            print(item.name, item.text.strip())
     return ''.join(result).strip()
 
 def resolveImg(url):
@@ -52,6 +48,14 @@ def get(rss_path):
         result = Result()
         result.url = entry.link
         result.cap_html_v2 = getCap(soup)
-        result.imgs = list(getImgs(soup))
+        if 'idaily/today' in rss_path:
+            result.cap_html_v2 = '【%s】\n\n%s' % (entry.title, result.cap_html_v2.rsplit('摄影师', 1)[0])
+        if 'rss/bingwallpaper' in rss_path:
+            result.cap_html_v2 = entry.title.split('(©')[0]
+        if 'nytimesdual' in rss_path:
+            result.url = ''
+            result.cap_html_v2 = entry.link
+        else:
+            result.imgs = list(getImgs(soup))
         # TODO: support video
         yield result
