@@ -52,10 +52,6 @@ def get(rss_path):
             result.cap_html_v2 = '【%s】\n\n%s' % (entry.title, result.cap_html_v2.rsplit('摄影师', 1)[0])
         if 'rss/bingwallpaper' in rss_path:
             result.cap_html_v2 = entry.title.split('(©')[0]
-        if 'nytimesdual' in rss_path:
-            result.url = ''
-            result.cap_html_v2 = entry.link
-        else:
-            result.imgs = list(getImgs(soup))
+        result.imgs = list(getImgs(soup))
         # TODO: support video
         yield result

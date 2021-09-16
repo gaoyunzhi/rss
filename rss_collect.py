@@ -35,11 +35,8 @@ def run():
 				else:
 					item_len = len(album.imgs) or 1
 					time.sleep(item_len * item_len + 5 * item_len)
-				if 'mp.weixin.qq.com' in album.url:
-					try:
-						album_sender.send_v2(channel, export_to_telegraph.getAlbum(album.url))
-					except:
-						channel.send_message(album.url)
+				if 'nytimesdual' in rss:
+					channel.send_message(album.url)
 				else:
 					album_sender.send_v2(channel, album)
 				existing.add(album.url)
