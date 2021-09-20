@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import yaml
-from telegram_util import log_on_fail
+from telegram_util import log_on_fail, matchKey
 from telegram.ext import Updater
 import plain_db
 from bs4 import BeautifulSoup
@@ -35,7 +35,7 @@ def run():
 				else:
 					item_len = len(album.imgs) or 1
 					time.sleep(item_len * item_len + 5 * item_len)
-				if 'nytimesdual' in rss:
+				if matchKey(rss, ['nytimesdual', 'api.feeddd.org/feeds']):
 					channel.send_message(album.url)
 				else:
 					album_sender.send_v2(channel, album)
