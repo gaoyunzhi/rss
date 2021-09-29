@@ -37,7 +37,6 @@ def resolveImg(url):
 def getImgs(soup):
     for item in soup.find_all('img'):
         if not item.get('src'):
-            print(item)
             continue
         yield resolveImg(item['src'].replace('&amp;', '&'))
 
