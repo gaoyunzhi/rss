@@ -17,6 +17,9 @@ with open('credential') as f:
 with open('db/setting') as f:
 	setting = yaml.load(f, Loader=yaml.FullLoader)
 
+with open('db/blocklist') as f:
+	blocklist = yaml.load(f, Loader=yaml.FullLoader)
+
 existing = plain_db.loadKeyOnlyDB('existing')
 tele = Updater(credential['bot_token'], use_context=True)
 debug_group = tele.bot.get_chat(credential['debug_group'])
@@ -28,6 +31,8 @@ def run():
 		channel = tele.bot.get_chat(channel_id)
 		for name, rss in detail.items():
 			for album in rss_to_album.get(rss):
+				if matchKey(album.cap_html_v2, blocklist.get(channel_id, [])):
+					continue
 				if existing.contain(album.url):
 					continue
 				if not sent:
