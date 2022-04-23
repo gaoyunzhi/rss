@@ -48,7 +48,10 @@ def get(rss_path):
     for entry in feed.entries:
         soup = BeautifulSoup(entry.description or entry.summary, 'html.parser')
         result = Result()
-        result.url = entry.link
+        try:
+            result.url = entry.link
+        except:
+            print(entry)
         result.cap_html_v2 = getCap(soup)
         if 'idaily/today' in rss_path:
             result.cap_html_v2 = '【%s】\n\n%s' % (entry.title, result.cap_html_v2.rsplit('摄影师', 1)[0])

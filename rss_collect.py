@@ -40,7 +40,7 @@ def run():
 				else:
 					item_len = len(album.imgs) or 1
 					time.sleep(item_len * item_len + 5 * item_len)
-				if matchKey(rss, ['nytimesdual', 'api.feeddd.org/feeds', 'stovol']):
+				if matchKey(rss, ['nytimesdual', 'api.feeddd.org/feeds', 'stovol', '1171871']):
 					channel.send_message(album.url)
 				else:
 					album_sender.send_v2(channel, album)
