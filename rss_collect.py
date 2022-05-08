@@ -10,6 +10,9 @@ import album_sender
 import time
 import rss_to_album
 import export_to_telegraph
+import warnings
+
+warnings.filterwarnings('ignore')
 
 with open('credential') as f:
 	credential = yaml.load(f, Loader=yaml.FullLoader)
