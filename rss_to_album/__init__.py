@@ -8,6 +8,11 @@ import yaml
 from bs4 import BeautifulSoup, NavigableString
 import feedparser
 from urllib.parse import unquote
+import export_to_telegraph
+
+with open('credential') as f:
+    credential = yaml.load(f, Loader=yaml.FullLoader)
+export_to_telegraph.token = credential['telegraph_token']
 
 def getCap(soup):
     result = []
@@ -50,6 +55,12 @@ def get(rss_path):
             result.url = entry.link
         except:
             result.url = entry.links[0].href[:-4]
+        if 'https://crossing.cw.com.tw/' in result.url:
+            print('here')
+            result.cap = export_to_telegraph.export('http://webcache.googleusercontent.com/search?q=cache:'+result.url, True, True, True, True)
+            print(result.cap)
+            yield result
+            continue
         result.cap_html_v2 = getCap(soup)
         if 'idaily/today' in rss_path:
             result.cap_html_v2 = '【%s】\n\n%s' % (entry.title, result.cap_html_v2.rsplit('摄影师', 1)[0])
