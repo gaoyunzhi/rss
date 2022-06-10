@@ -23,7 +23,6 @@ with open('db/setting') as f:
 with open('db/blocklist') as f:
 	blocklist = yaml.load(f, Loader=yaml.FullLoader)
 
-existing = plain_db.loadKeyOnlyDB('existing')
 tele = Updater(credential['bot_token'], use_context=True)
 debug_group = tele.bot.get_chat(credential['debug_group'])
 
