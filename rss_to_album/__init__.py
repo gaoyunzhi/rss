@@ -9,6 +9,7 @@ from bs4 import BeautifulSoup, NavigableString
 import feedparser
 from urllib.parse import unquote
 import export_to_telegraph
+import time
 
 with open('credential') as f:
     credential = yaml.load(f, Loader=yaml.FullLoader)
@@ -45,7 +46,7 @@ def getImgs(soup):
             continue
         yield resolveImg(item['src'].replace('&amp;', '&'))
 
-def get(rss_path):
+def get(rss_path, existing):
     feed = feedparser.parse(rss_path)
     feed_entries = feed.entries
     for entry in feed.entries:
@@ -55,7 +56,10 @@ def get(rss_path):
             result.url = entry.link
         except:
             result.url = entry.links[0].href[:-4]
+        if existing.contain(result.url):
+            continue
         if 'https://crossing.cw.com.tw/' in result.url:
+            time.sleep(5)
             result.cap = export_to_telegraph.export('http://webcache.googleusercontent.com/search?q=cache:'+result.url, True, True, True, True)
             if 'no-title' not in result.cap:
                 yield result

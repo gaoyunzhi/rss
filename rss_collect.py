@@ -23,6 +23,7 @@ with open('db/setting') as f:
 with open('db/blocklist') as f:
 	blocklist = yaml.load(f, Loader=yaml.FullLoader)
 
+existing = plain_db.loadKeyOnlyDB('existing')
 tele = Updater(credential['bot_token'], use_context=True)
 debug_group = tele.bot.get_chat(credential['debug_group'])
 
@@ -32,7 +33,7 @@ def run():
 	for channel_id, detail in setting.items():
 		channel = tele.bot.get_chat(channel_id)
 		for name, rss in detail.items():
-			for album in rss_to_album.get(rss):
+			for album in rss_to_album.get(rss, existing):
 				if matchKey(album.cap_html_v2, blocklist.get(channel_id, [])):
 					continue
 				if existing.contain(album.url):
