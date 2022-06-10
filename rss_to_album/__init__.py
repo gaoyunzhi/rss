@@ -57,7 +57,8 @@ def get(rss_path):
             result.url = entry.links[0].href[:-4]
         if 'https://crossing.cw.com.tw/' in result.url:
             result.cap = export_to_telegraph.export('http://webcache.googleusercontent.com/search?q=cache:'+result.url, True, True, True, True)
-            yield result
+            if 'no-title' not in result.cap:
+                yield result
             continue
         result.cap_html_v2 = getCap(soup)
         if 'idaily/today' in rss_path:
