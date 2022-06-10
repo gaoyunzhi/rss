@@ -60,6 +60,7 @@ def get(rss_path, existing):
             continue
         if 'https://crossing.cw.com.tw/' in result.url:
             time.sleep(5)
+            print(result.url)
             result.cap = export_to_telegraph.export('http://webcache.googleusercontent.com/search?q=cache:'+result.url, True, True, True, True)
             if 'no-title' not in result.cap:
                 yield result
