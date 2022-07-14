@@ -4,6 +4,7 @@
 name = 'rss_to_album'
 
 from telegram_util import AlbumResult as Result
+from telegram_util import matchKey
 import yaml
 from bs4 import BeautifulSoup, NavigableString
 import feedparser
@@ -58,7 +59,7 @@ def get(rss_path, existing):
             result.url = entry.links[0].href[:-4]
         if existing.contain(result.url):
             continue
-        if 'https://crossing.cw.com.tw/' in result.url:
+        if matchKey(result.url, ['http://posts.careerengine.us/p/', 'https://crossing.cw.com.tw/']):
             time.sleep(10)
             result.cap = export_to_telegraph.export('http://webcache.googleusercontent.com/search?q=cache:'+result.url, True, True, True, True)
             if 'no-title' not in result.cap:
