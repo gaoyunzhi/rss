@@ -61,7 +61,8 @@ def get(rss_path, existing):
             continue
         if matchKey(result.url, ['http://posts.careerengine.us/p/', 'https://crossing.cw.com.tw/']):
             time.sleep(10)
-            result.cap = export_to_telegraph.export('http://webcache.googleusercontent.com/search?q=cache:'+result.url, True, True, True, True)
+            to_simplified = 'https://crossing.cw.com.tw/' in result.url
+            result.cap = export_to_telegraph.export('http://webcache.googleusercontent.com/search?q=cache:'+result.url, True, True, to_simplified)
             if 'no-title' not in result.cap:
                 yield result
             continue
