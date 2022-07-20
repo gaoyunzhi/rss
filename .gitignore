@@ -10,3 +10,4 @@ fb_ar
 *.instagramy*
 details_log
 *backup*
+db/blocklist
