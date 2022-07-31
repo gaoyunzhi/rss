@@ -62,7 +62,7 @@ def get(rss_path, existing):
         if matchKey(result.url, ['http://posts.careerengine.us/p/', 'https://crossing.cw.com.tw/']):
             time.sleep(10)
             to_simplified = 'https://crossing.cw.com.tw/' in result.url
-            print('rss, fetch cached content', 'http://webcache.googleusercontent.com/search?q=cache:'+result.url)
+            # print('rss, fetch cached content', 'http://webcache.googleusercontent.com/search?q=cache:'+result.url)
             result.cap = export_to_telegraph.export('http://webcache.googleusercontent.com/search?q=cache:'+result.url, True, True, to_simplified)
             if 'no-title' not in result.cap:
                 yield result
